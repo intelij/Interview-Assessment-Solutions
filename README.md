@@ -17,3 +17,8 @@ I will be creating tutorials for possible interview practical questions I have c
 - Create an admin section to create users. Each user can create/edit/delete their own todos.
 - A visual representation of who edited/updated a todo last. 
 
+
+### Detailed solution with tutorials how you can implement the same can be found here: 
+
+### [TodoApp-LaraVue](TodoApp-LaraVue.md)
+
