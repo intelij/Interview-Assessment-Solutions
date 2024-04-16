@@ -436,14 +436,177 @@ Create Blade views for displaying and managing todo lists and items. Ensure that
 
 These blade templates cover the basic functionality of managing todo lists and items. You may need to customize them further based on your specific requirements, such as styling, additional fields, or validation error handling. 
 
+## Step 6: Vue Router and Vue Components
 
-
-
-### Step 6: Vue.js Integration
+### Install Vue Router
 
 Integrate Vue.js for dynamic frontend interactions.
 
 We'll have views for displaying todo lists, creating new lists, viewing individual lists, editing lists, creating todo items, and editing todo items.
 
+```
+npm install vue-router
+```
 
+### Set up Vue Router
+
+`Create a router.js file in the resources/js directory:`
+
+```
+// resources/js/router.js
+
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import TodoLists from './components/TodoLists.vue';
+import TodoList from './components/TodoList.vue';
+import CreateTodoList from './components/CreateTodoList.vue';
+import EditTodoList from './components/EditTodoList.vue';
+import CreateTodoItem from './components/CreateTodoItem.vue';
+import EditTodoItem from './components/EditTodoItem.vue';
+
+Vue.use(VueRouter);
+
+const routes = [
+    { path: '/', component: TodoLists },
+    { path: '/todo-lists/:id', component: TodoList, props: true },
+    { path: '/todo-lists/create', component: CreateTodoList },
+    { path: '/todo-lists/:id/edit', component: EditTodoList, props: true },
+    { path: '/todo-lists/:parentId/items/create', component: CreateTodoItem, props: true },
+    { path: '/todo-items/:id/edit', component: EditTodoItem, props: true }
+];
+
+const router = new VueRouter({
+    mode: 'history',
+    routes
+});
+
+export default router;
+
+```
+
+### Create Vue Components
+
+Create Vue components in the resources/js/components directory:
+
+- `TodoLists.vue`
+- `TodoList.vue`
+- `CreateTodoList.vue`
+- `EditTodoList.vue`
+- `CreateTodoItem.vue`
+- `EditTodoItem.vue`
+
+### Define Vue Templates
+
+Define the templates for each Vue component, paste each section to the corresponding file name from the previous list above.
+
+```
+<!-- TodoLists.vue -->
+<template>
+  <div>
+    <h1>Your Todo Lists</h1>
+    <router-link to="/todo-lists/create">Create New Todo List</router-link>
+    <ul>
+      <li v-for="todoParent in todoParents" :key="todoParent.id">
+        <router-link :to="{ name: 'todo-list', params: { id: todoParent.id }}">{{ todoParent.title }}</router-link>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<!-- TodoList.vue -->
+<template>
+  <div>
+    <h1>{{ todoParent.title }}</h1>
+    <ul>
+      <li v-for="todoItem in todoParent.items" :key="todoItem.id">
+        {{ todoItem.content }}
+      </li>
+    </ul>
+    <router-link :to="{ name: 'edit-todo-list', params: { id: todoParent.id }}">Edit</router-link>
+    <button @click="deleteTodoList(todoParent.id)">Delete</button>
+    <router-link :to="{ name: 'create-todo-item', params: { parentId: todoParent.id }}">Add Todo Item</router-link>
+  </div>
+</template>
+
+<!-- CreateTodoList.vue -->
+<template>
+  <div>
+    <h1>Create New Todo List</h1>
+    <form @submit.prevent="createTodoList">
+      <input type="text" v-model="title" placeholder="Enter title">
+      <button type="submit">Create</button>
+    </form>
+  </div>
+</template>
+
+<!-- EditTodoList.vue -->
+<template>
+  <div>
+    <h1>Edit Todo List</h1>
+    <form @submit.prevent="updateTodoList">
+      <input type="text" v-model="title">
+      <button type="submit">Update</button>
+    </form>
+  </div>
+</template>
+
+<!-- CreateTodoItem.vue -->
+<template>
+  <div>
+    <h1>Create New Todo Item</h1>
+    <form @submit.prevent="createTodoItem">
+      <input type="text" v-model="content" placeholder="Enter content">
+      <button type="submit">Create</button>
+    </form>
+  </div>
+</template>
+
+<!-- EditTodoItem.vue -->
+<template>
+  <div>
+    <h1>Edit Todo Item</h1>
+    <form @submit.prevent="updateTodoItem">
+      <input type="text" v-model="content">
+      <button type="submit">Update</button>
+    </form>
+  </div>
+</template>
+
+```
+
+### Wire up Vue Components with Vue Router
+
+```
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app');
+
+```
+
+### Update app.blade.php to load Vue app
+
+```
+<!-- resources/views/layouts/app.blade.php -->
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <!-- Head content -->
+</head>
+<body>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+    <script src="{{ mix('js/app.js') }}"></script>
+</body>
+</html>
+
+```
+
+All done :) Yeepee! you have a fully functional Vue frontend for managing todo lists and items, integrated with Vue Router. 
 
