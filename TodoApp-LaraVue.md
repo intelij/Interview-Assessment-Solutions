@@ -314,11 +314,135 @@ class TodoTest extends TestCase
 
 Create Blade views for displaying and managing todo lists and items. Ensure that the views reflect the permissions of the authenticated user.
 
+#### Todo Parent Views:
+
+#### Index View (`todo_parents.index.blade.php`):
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>Your Todo Lists</h1>
+        <ul>
+            @foreach ($todoParents as $todoParent)
+                <li><a href="{{ route('todo-parents.show', $todoParent) }}">{{ $todoParent->title }}</a></li>
+            @endforeach
+        </ul>
+        <a href="{{ route('todo-parents.create') }}">Create New Todo List</a>
+    </div>
+@endsection
+```
+
+#### Create View (`todo_parents.create.blade.php`):
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>Create New Todo List</h1>
+        <form action="{{ route('todo-parents.store') }}" method="post">
+            @csrf
+            <input type="text" name="title" placeholder="Enter title">
+            <button type="submit">Create</button>
+        </form>
+    </div>
+@endsection
+
+```
+
+#### Show View (`todo_parents.show.blade.php`):
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>{{ $todoParent->title }}</h1>
+        <ul>
+            @foreach ($todoParent->items as $item)
+                <li>{{ $item->content }}</li>
+            @endforeach
+        </ul>
+        <a href="{{ route('todo-parents.edit', $todoParent) }}">Edit</a>
+        <form action="{{ route('todo-parents.destroy', $todoParent) }}" method="post">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+@endsection
+
+```
+
+#### Edit View (`todo_parents.edit.blade.php`):
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>Edit Todo List</h1>
+        <form action="{{ route('todo-parents.update', $todoParent) }}" method="post">
+            @csrf
+            @method('PUT')
+            <input type="text" name="title" value="{{ $todoParent->title }}">
+            <button type="submit">Update</button>
+        </form>
+    </div>
+@endsection
+
+```
+
+#### Todo Item Views:
+
+#### Create View (`todo_items.create.blade.php`):
+
+```
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>Create New Todo Item</h1>
+        <form action="{{ route('todo-items.store') }}" method="post">
+            @csrf
+            <input type="hidden" name="todo_parent_id" value="{{ $todoParent->id }}">
+            <input type="text" name="content" placeholder="Enter content">
+            <button type="submit">Create</button>
+        </form>
+    </div>
+@endsection
+
+```
+
+#### Edit View (`todo_items.edit.blade.php`):
+
+@extends('layouts.app')
+
+@section('content')
+    <div>
+        <h1>Edit Todo Item</h1>
+        <form action="{{ route('todo-items.update', $todoItem) }}" method="post">
+            @csrf
+            @method('PUT')
+            <input type="text" name="content" value="{{ $todoItem->content }}">
+            <button type="submit">Update</button>
+        </form>
+    </div>
+@endsection
+
+
+These blade templates cover the basic functionality of managing todo lists and items. You may need to customize them further based on your specific requirements, such as styling, additional fields, or validation error handling. 
+
+
 
 
 ### Step 6: Vue.js Integration
 
-Integrate Vue.js for dynamic frontend interactions. Use Axios or Laravel Sanctum for API requests if necessary.
+Integrate Vue.js for dynamic frontend interactions.
 
-Below is a basic example of how the Vue component for todo items might look like:
+We'll have views for displaying todo lists, creating new lists, viewing individual lists, editing lists, creating todo items, and editing todo items.
+
+
 
