@@ -418,6 +418,7 @@ Create Blade views for displaying and managing todo lists and items. Ensure that
 
 #### Edit View (`todo_items.edit.blade.php`):
 
+```
 @extends('layouts.app')
 
 @section('content')
@@ -431,7 +432,7 @@ Create Blade views for displaying and managing todo lists and items. Ensure that
         </form>
     </div>
 @endsection
-
+```
 
 These blade templates cover the basic functionality of managing todo lists and items. You may need to customize them further based on your specific requirements, such as styling, additional fields, or validation error handling. 
 
