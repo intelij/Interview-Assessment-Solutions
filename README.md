@@ -46,6 +46,6 @@ $users = [
 
 ```
 
-### You have the option to Register a new user once you start up the project.
+### Upon starting the project, you'll have the opportunity to register a new user.
 
-### Once you register/login the dashboard you will see links that will take you to different types of the project.
+### After successfully registering or logging in, you'll be directed to the dashboard where you'll find navigational links to various sections of the project.
