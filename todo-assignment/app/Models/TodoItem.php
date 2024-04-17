@@ -11,7 +11,7 @@ class TodoItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
+        'title', // content
         'completed',
         'updated_by',
     ];
